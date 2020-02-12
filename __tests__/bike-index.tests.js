@@ -5,7 +5,7 @@ describe('Bikes', () => {
 
 test('should identify number of bikes registered', () => {
     let bike = new Bikes();
-    expect(bike.total).toEqual(0);
+    expect(bike.bikeTotal()).toEqual(0);
 });
 
 });

@@ -3,26 +3,25 @@ import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles.css';
 import './bike-index';
+import { Bikes } from './bike-index.js';
 
 
 
 $(document).ready(function(){
-    $("#outputSubmit").click(function(){
 
+  $("form").submit(function(event) {
+    event.preventDefault();
+    const city = $("input#city").val();
 
-        fetch(`https://bikeindex.org:443/api/v3/search/count?location=IP&distance=10&stolenness=non`)
-          .then(function(response){
-            return response.json();
-          })
-          .then(function(jsonifiedResponse){
-            getElements(jsonifiedResponse);
-          })
-          .catch(err => {
-            console.log(err);
-          });
+    (async () => {
+      let bikes = new Bikes();
+      const response = await bikes.getBikesByCity(city);
+      getElements(response);
+    })();
 
-          const getElements = function (response){
-            $("#outputResult").text(`The number of bikes stolen is ${response.stolen}.`)
-          }
+    function getElements(response) {
+      $('#outputCity').text(`The city you are searching is ${city}.`);
+      $('#outputResult').text(`The amount of bikes registered is: ${response.proximity}`);
+    };
+    });
     })
-})
